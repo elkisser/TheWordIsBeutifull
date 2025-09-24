@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="sol" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbe6"/>
+      <stop offset="70%" stop-color="#ffe066"/>
+      <stop offset="100%" stop-color="#ffb300"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#ffe06600"/>
+      <stop offset="100%" stop-color="#ffe06655"/>
+    </radialGradient>
+    <linearGradient id="planeta" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8ecae6"/>
+      <stop offset="100%" stop-color="#219ebc"/>
+    </linearGradient>
+  </defs>
+  <!-- Halo solar -->
+  <circle cx="32" cy="32" r="28" fill="url(#halo)"/>
+  <!-- Sol -->
+  <circle cx="32" cy="32" r="16" fill="url(#sol)" stroke="#ffd700" stroke-width="2"/>
+  <!-- Rayos solares -->
+  <g stroke="#ffd700" stroke-width="2">
+    <line x1="32" y1="4" x2="32" y2="16"/>
+    <line x1="32" y1="48" x2="32" y2="60"/>
+    <line x1="4" y1="32" x2="16" y2="32"/>
+    <line x1="48" y1="32" x2="60" y2="32"/>
+    <line x1="13" y1="13" x2="21" y2="21"/>
+    <line x1="51" y1="13" x2="43" y2="21"/>
+    <line x1="13" y1="51" x2="21" y2="43"/>
+    <line x1="51" y1="51" x2="43" y2="43"/>
+  </g>
+  <!-- Planeta azul -->
+  <circle cx="48" cy="48" r="7" fill="url(#planeta)" stroke="#126782" stroke-width="1.5"/>
+  <!-- Sombra del planeta -->
+  <ellipse cx="48" cy="52" rx="4" ry="1.2" fill="#000" opacity="0.18"/>
+  <!-- Órbita -->
+  <ellipse cx="32" cy="32" rx="24" ry="24" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.18"/>
+  <!-- Estrellas -->
+  <circle cx="10" cy="10" r="1.2" fill="#fff"/>
+  <circle cx="58" cy="12" r="0.8" fill="#fff"/>
+  <circle cx="14" cy="54" r="0.7" fill="#fff"/>
+  <circle cx="40" cy="8" r="0.9" fill="#fff"/>
+</svg>
