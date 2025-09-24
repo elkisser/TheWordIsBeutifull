@@ -5,364 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viaje por el Sistema Solar</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <style>
-        :root {
-            --sol: #FDB813;
-            --mercurio: #B7B8B9;
-            --venus: #BF8639;
-            --tierra: #2A6BBF;
-            --marte: #C1440E;
-            --jupiter: #D8CA9D;
-            --saturno: #E3BB76;
-            --urano: #D1E7E7;
-            --neptuno: #3E66F9;
-            --pluton: #D3C2AB;
-            --easing: cubic-bezier(0.65, 0, 0.35, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
-            background: #000;
-            color: #fff;
-            perspective: 1000px;
-        }
-
-        #contenedor-principal {
-            height: 100vh;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-        }
-
-        .seccion-planeta {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.8s var(--easing), visibility 0.8s;
-        }
-
-        .seccion-planeta.activa {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .contenedor-planeta {
-            display: flex;
-            width: 100%;
-            max-width: 1400px;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 50px;
-            position: relative;
-        }
-
-        .info-izquierda, .info-derecha {
-            width: 35%;
-            opacity: 0;
-            transform: translateY(50px);
-        }
-
-        .info-izquierda {
-            text-align: right;
-            padding-right: 40px;
-        }
-
-        .info-derecha {
-            padding-left: 40px;
-        }
-
-        .planeta-centro {
-            width: 30%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .planeta {
-            border-radius: 50%;
-            position: relative;
-            transition: transform 0.8s var(--easing);
-            transform: scale(0.3);
-            opacity: 0;
-        }
-
-        .sol {
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, var(--sol) 0%, #FF4500 100%);
-            box-shadow: 0 0 150px var(--sol);
-        }
-
-        .mercurio {
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle, var(--mercurio) 0%, #5A5A5A 100%);
-        }
-
-        .venus {
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, var(--venus) 0%, #7A5A2A 100%);
-        }
-
-        .tierra {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, var(--tierra) 0%, #0F4C75 100%);
-            position: relative;
-        }
-
-        .tierra::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 30px;
-            width: 20px;
-            height: 20px;
-            background: #4F8A1F;
-            border-radius: 50%;
-        }
-
-        .marte {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, var(--marte) 0%, #8B2A0A 100%);
-        }
-
-        .jupiter {
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, var(--jupiter) 0%, #9B7D3A 100%);
-            position: relative;
-        }
-
-        .jupiter::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: -10px;
-            width: 180px;
-            height: 10px;
-            background: #9B7D3A;
-            border-radius: 5px;
-            transform: rotate(15deg);
-        }
-
-        .saturno {
-            width: 130px;
-            height: 130px;
-            background: radial-gradient(circle, var(--saturno) 0%, #A67C52 100%);
-            position: relative;
-        }
-
-        .saturno::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 180px;
-            height: 10px;
-            background: linear-gradient(90deg, transparent, #C19A6B, transparent);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) rotate(20deg);
-            box-shadow: 0 0 15px rgba(193, 154, 107, 0.5);
-        }
-
-        .urano {
-            width: 90px;
-            height: 90px;
-            background: radial-gradient(circle, var(--urano) 0%, #87CEEB 100%);
-        }
-
-        .neptuno {
-            width: 90px;
-            height: 90px;
-            background: radial-gradient(circle, var(--neptuno) 0%, #1E62D0 100%);
-        }
-
-        .pluton {
-            width: 30px;
-            height: 30px;
-            background: radial-gradient(circle, var(--pluton) 0%, #8B7D6B 100%);
-        }
-
-        h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: transparent;
-            background: linear-gradient(45deg, #ffffff, #aaaaaa);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            opacity: 0.9;
-        }
-
-        .datos-destacados {
-            margin-top: 20px;
-            padding: 15px;
-            border-left: 3px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 5px;
-        }
-
-        .fondo-estrellas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .estrella {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle 5s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
-        }
-
-        .indicador-scroll {
-            position: fixed;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1000;
-        }
-
-        .punto-indicador {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            margin: 15px 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .punto-indicador::after {
-            content: '';
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            font-size: 0.8rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .punto-indicador:nth-child(1)::after { content: 'Sol'; }
-        .punto-indicador:nth-child(2)::after { content: 'Mercurio'; }
-        .punto-indicador:nth-child(3)::after { content: 'Venus'; }
-        .punto-indicador:nth-child(4)::after { content: 'Tierra'; }
-        .punto-indicador:nth-child(5)::after { content: 'Marte'; }
-        .punto-indicador:nth-child(6)::after { content: 'Júpiter'; }
-        .punto-indicador:nth-child(7)::after { content: 'Saturno'; }
-        .punto-indicador:nth-child(8)::after { content: 'Urano'; }
-        .punto-indicador:nth-child(9)::after { content: 'Neptuno'; }
-        .punto-indicador:nth-child(10)::after { content: 'Plutón'; }
-
-        .punto-indicador:hover::after,
-        .punto-indicador.activo::after {
-            opacity: 1;
-        }
-
-        .punto-indicador.activo {
-            background: #fff;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        .titulo-seccion {
-            position: absolute;
-            top: 50px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 1.5rem;
-            opacity: 0.7;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-        }
-
-        .controles {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .btn-control {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-control:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .progreso-scroll {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-        }
-
-        .barra-progreso {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #4F8A1F, #2A6BBF);
-            transition: width 0.3s ease;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="fondo-estrellas" id="fondoEstrellas"></div>
@@ -375,13 +21,22 @@
         <!-- Los puntos se generarán con JavaScript -->
     </div>
 
-    <div class="controles">
-        <button class="btn-control" id="btnAnterior">Anterior</button>
-        <button class="btn-control" id="btnSiguiente">Siguiente</button>
-    </div>
 
     <div id="contenedor-principal">
-        <section class="seccion-planeta activa" id="sol">
+        <!-- Sección Home/Inicio -->
+        <section class="seccion-planeta home-section activa" id="home">
+            <div class="home-content">
+                <h1 class="home-title">Viaje por el Sistema Solar</h1>
+                <h2 class="home-subtitle">Una exploración interactiva de nuestro vecindario cósmico</h2>
+                <p class="home-description">Bienvenido a un viaje fascinante a través de nuestro sistema solar. Descubre los secretos de los planetas, desde el ardiente Sol hasta el distante Plutón. Desplázate hacia abajo para comenzar tu aventura espacial y explorar las maravillas de nuestro sistema solar.</p>
+            </div>
+            <div class="scroll-indicator">
+                <span class="scroll-text">Desplázate para explorar</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </section>
+
+        <section class="seccion-planeta" id="sol">
             <h3 class="titulo-seccion">EL SOL</h3>
             <div class="contenedor-planeta">
                 <div class="info-izquierda">
@@ -459,8 +114,12 @@
                         <p><strong>Satélites naturales:</strong> 1 (Luna)</p>
                     </div>
                 </div>
-                <div class="planeta-centro">
+                <div class="planeta-centro planeta-con-orbita">
                     <div class="planeta tierra" id="planetaTierra"></div>
+                    <!-- Órbita lunar y Luna fuera del planeta -->
+                    <div class="orbita-lunar">
+                        <div class="luna" id="luna"></div>
+                    </div>
                 </div>
                 <div class="info-derecha">
                     <p>La Tierra tiene un poderoso campo magnético que nos protege de las partículas cargadas del viento solar.</p>
@@ -504,7 +163,9 @@
                     </div>
                 </div>
                 <div class="planeta-centro">
-                    <div class="planeta jupiter" id="planetaJupiter"></div>
+                    <div class="planeta jupiter" id="planetaJupiter">
+                        <div class="mancha-roja"></div>
+                    </div>
                 </div>
                 <div class="info-derecha">
                     <p>La Gran Mancha Roja de Júpiter es una tormenta gigante que ha estado activa durante al menos 400 años, con vientos de hasta 432 km/h.</p>
@@ -525,7 +186,13 @@
                         <p><strong>Satélites naturales:</strong> 82 conocidas</p>
                     </div>
                 </div>
-                <div class="planeta-centro">
+                <div class="planeta-centro planeta-con-anillos">
+                    <!-- Anillos de Saturno fuera del planeta -->
+                    <div class="anillos-saturno">
+                        <div class="anillo anillo-1"></div>
+                        <div class="anillo anillo-2"></div>
+                        <div class="anillo anillo-3"></div>
+                    </div>
                     <div class="planeta saturno" id="planetaSaturno"></div>
                 </div>
                 <div class="info-derecha">
@@ -591,8 +258,9 @@
                         <p><strong>Satélites naturales:</strong> 5 conocidas</p>
                     </div>
                 </div>
-                <div class="planeta-centro">
+                <div class="planeta-centro planeta-con-luna">
                     <div class="planeta pluton" id="planetaPluton"></div>
+                    <div class="luna-pluton"></div>
                 </div>
                 <div class="info-derecha">
                     <p>Plutón tarda 248 años terrestres en completar una órbita alrededor del Sol, y su órbita es mucho más elíptica e inclinada que la de los planetas principales.</p>
@@ -602,241 +270,6 @@
         </section>
     </div>
 
-    <script>
-        // Datos de los planetas para referencia
-        const planetas = [
-            'sol', 'mercurio', 'venus', 'tierra', 'marte', 
-            'jupiter', 'saturno', 'urano', 'neptuno', 'pluton'
-        ];
-        
-        let planetaActual = 0;
-        let animacionEnProgreso = false;
-
-        // Crear estrellas de fondo
-        function crearEstrellas() {
-            const contenedor = document.getElementById('fondoEstrellas');
-            for (let i = 0; i < 300; i++) {
-                const estrella = document.createElement('div');
-                estrella.classList.add('estrella');
-                estrella.style.width = `${Math.random() * 3}px`;
-                estrella.style.height = estrella.style.width;
-                estrella.style.left = `${Math.random() * 100}%`;
-                estrella.style.top = `${Math.random() * 100}%`;
-                estrella.style.animationDelay = `${Math.random() * 5}s`;
-                estrella.style.opacity = Math.random() * 0.7 + 0.3;
-                contenedor.appendChild(estrella);
-            }
-        }
-
-        // Crear indicador de scroll
-        function crearIndicadorScroll() {
-            const indicador = document.getElementById('indicadorScroll');
-            
-            planetas.forEach((planeta, index) => {
-                const punto = document.createElement('div');
-                punto.classList.add('punto-indicador');
-                if (index === 0) punto.classList.add('activo');
-                
-                punto.addEventListener('click', () => {
-                    if (!animacionEnProgreso) {
-                        cambiarPlaneta(index);
-                    }
-                });
-                
-                indicador.appendChild(punto);
-            });
-        }
-
-        // Configurar controles de navegación
-        function configurarControles() {
-            const btnAnterior = document.getElementById('btnAnterior');
-            const btnSiguiente = document.getElementById('btnSiguiente');
-            
-            btnAnterior.addEventListener('click', () => {
-                if (!animacionEnProgreso && planetaActual > 0) {
-                    cambiarPlaneta(planetaActual - 1);
-                }
-            });
-            
-            btnSiguiente.addEventListener('click', () => {
-                if (!animacionEnProgreso && planetaActual < planetas.length - 1) {
-                    cambiarPlaneta(planetaActual + 1);
-                }
-            });
-            
-            // Configurar navegación con rueda del mouse
-            document.addEventListener('wheel', (e) => {
-                if (animacionEnProgreso) return;
-                
-                if (e.deltaY > 0 && planetaActual < planetas.length - 1) {
-                    cambiarPlaneta(planetaActual + 1);
-                } else if (e.deltaY < 0 && planetaActual > 0) {
-                    cambiarPlaneta(planetaActual - 1);
-                }
-            });
-            
-            // Configurar navegación con teclado
-            document.addEventListener('keydown', (e) => {
-                if (animacionEnProgreso) return;
-                
-                if ((e.key === 'ArrowDown' || e.key === 'PageDown') && planetaActual < planetas.length - 1) {
-                    cambiarPlaneta(planetaActual + 1);
-                    e.preventDefault();
-                } else if ((e.key === 'ArrowUp' || e.key === 'PageUp') && planetaActual > 0) {
-                    cambiarPlaneta(planetaActual - 1);
-                    e.preventDefault();
-                }
-            });
-        }
-
-        // Cambiar al planeta especificado
-        function cambiarPlaneta(nuevoPlaneta) {
-            if (animacionEnProgreso || nuevoPlaneta === planetaActual) return;
-            
-            animacionEnProgreso = true;
-            const direccion = nuevoPlaneta > planetaActual ? 1 : -1;
-            
-            // Obtener elementos
-            const seccionActual = document.getElementById(planetas[planetaActual]);
-            const seccionSiguiente = document.getElementById(planetas[nuevoPlaneta]);
-            const planetaElemActual = document.getElementById(`planeta${planetas[planetaActual].charAt(0).toUpperCase() + planetas[planetaActual].slice(1)}`);
-            const planetaElemSiguiente = document.getElementById(`planeta${planetas[nuevoPlaneta].charAt(0).toUpperCase() + planetas[nuevoPlaneta].slice(1)}`);
-            const infoActual = seccionActual.querySelectorAll('.info-izquierda, .info-derecha');
-            const infoSiguiente = seccionSiguiente.querySelectorAll('.info-izquierda, .info-derecha');
-            
-            // Animación de salida del planeta actual
-            anime({
-                targets: planetaElemActual,
-                scale: 0.3,
-                opacity: 0,
-                rotate: `${direccion * 90}deg`,
-                duration: 1000,
-                easing: 'easeInOutQuad'
-            });
-            
-            // Animación de salida de la información actual
-            anime({
-                targets: infoActual,
-                translateY: 50,
-                opacity: 0,
-                duration: 800,
-                delay: anime.stagger(100),
-                easing: 'easeInQuad',
-                complete: function() {
-                    seccionActual.classList.remove('activa');
-                }
-            });
-            
-            // Mostrar siguiente sección
-            seccionSiguiente.classList.add('activa');
-            
-            // Animación de entrada del siguiente planeta
-            anime({
-                targets: planetaElemSiguiente,
-                scale: [0.3, 1],
-                opacity: [0, 1],
-                rotate: [`${-direccion * 90}deg`, '0deg'],
-                duration: 1200,
-                delay: 300,
-                easing: 'easeOutElastic(1, .8)'
-            });
-            
-            // Animación de entrada de la información siguiente
-            anime({
-                targets: infoSiguiente,
-                translateY: [50, 0],
-                opacity: [0, 1],
-                duration: 1000,
-                delay: anime.stagger(100, {start: 600}),
-                easing: 'easeOutQuad',
-                complete: function() {
-                    animacionEnProgreso = false;
-                }
-            });
-            
-            // Actualizar indicadores
-            document.querySelectorAll('.punto-indicador').forEach((punto, index) => {
-                if (index === nuevoPlaneta) {
-                    punto.classList.add('activo');
-                } else {
-                    punto.classList.remove('activo');
-                }
-            });
-            
-            // Actualizar barra de progreso
-            const progreso = (nuevoPlaneta / (planetas.length - 1)) * 100;
-            anime({
-                targets: '#barraProgreso',
-                width: `${progreso}%`,
-                duration: 1000,
-                easing: 'easeOutQuad'
-            });
-            
-            planetaActual = nuevoPlaneta;
-        }
-
-        // Inicializar animación del sol al cargar
-        function animacionInicial() {
-            const sol = document.getElementById('planetaSol');
-            const infoSol = document.querySelectorAll('#sol .info-izquierda, #sol .info-derecha');
-            
-            // Animación del sol
-            anime({
-                targets: sol,
-                scale: [0, 1],
-                rotate: '1turn',
-                opacity: [0, 1],
-                duration: 2000,
-                easing: 'easeOutElastic(1, .8)',
-                complete: function() {
-                    // Efecto de resplandor continuo
-                    anime({
-                        targets: sol,
-                        boxShadow: [
-                            { value: '0 0 50px rgba(253, 184, 19, 0.5)' },
-                            { value: '0 0 100px rgba(253, 184, 19, 0.8)' },
-                            { value: '0 0 50px rgba(253, 184, 19, 0.5)' }
-                        ],
-                        duration: 3000,
-                        easing: 'easeInOutSine',
-                        loop: true
-                    });
-                }
-            });
-            
-            // Animación de la información del sol
-            anime({
-                targets: infoSol,
-                translateY: [50, 0],
-                opacity: [0, 1],
-                duration: 1500,
-                delay: anime.stagger(200, {start: 800}),
-                easing: 'easeOutQuad'
-            });
-        }
-
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', () => {
-            crearEstrellas();
-            crearIndicadorScroll();
-            configurarControles();
-            animacionInicial();
-            
-            // Efecto parallax para las estrellas
-            document.addEventListener('mousemove', (e) => {
-                const x = e.clientX / window.innerWidth;
-                const y = e.clientY / window.innerHeight;
-                const estrellas = document.querySelectorAll('.estrella');
-                
-                estrellas.forEach((estrella, index) => {
-                    const velocidad = 0.5 + (index % 3) * 0.5;
-                    const moveX = (x - 0.5) * velocidad * 20;
-                    const moveY = (y - 0.5) * velocidad * 20;
-                    
-                    estrella.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                });
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

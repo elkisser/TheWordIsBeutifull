@@ -1,0 +1,1101 @@
+
+/* Fondo semitransparente para la info del Sol */
+#sol .info-izquierda, #sol .info-derecha {
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 16px;
+    padding: 24px 18px;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18);
+    opacity: 0.99;
+    position: relative;
+    z-index: 20;
+}
+:root {
+    --sol: #FFD700;
+    --mercurio: #A9A9A9;
+    --venus: #E6E6FA;
+    --tierra: #1E90FF;
+    --marte: #FF4500;
+    --jupiter: #F5DEB3;
+    --saturno: #D2B48C;
+    --urano: #87CEFA;
+    --neptuno: #4169E1;
+    --pluton: #BC8F8F;
+    --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    z-index: 1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    /* Oculta la barra de scroll en la mayoría de navegadores */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE y Edge */
+}
+
+body::-webkit-scrollbar, html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
+}
+
+body {
+    background: #000;
+    color: #fff;
+    perspective: 1000px;
+}
+
+/* Sección Home */
+.home-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.home-content {
+    text-align: center;
+    max-width: 800px;
+    padding: 0 20px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1.5s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.home-title {
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #ffffff, #8A2BE2, #1E90FF, #00BFFF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+}
+
+.home-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    opacity: 0.8;
+    color: #E6E6FA;
+    text-shadow: 0 0 10px rgba(230, 230, 250, 0.5);
+}
+
+.home-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.8;
+    color: #B0C4DE;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1s;
+}
+
+@keyframes fadeIn {
+    to { opacity: 0.8; }
+}
+
+.scroll-text {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.scroll-arrow {
+    width: 30px;
+    height: 30px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(-45deg); }
+    40% { transform: translateY(-10px) rotate(-45deg); }
+    60% { transform: translateY(-5px) rotate(-45deg); }
+}
+
+/* Contenedor principal de planetas */
+#contenedor-principal {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.seccion-planeta {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s var(--easing), visibility 0.8s;
+}
+
+.seccion-planeta.activa {
+    opacity: 1;
+    visibility: visible;
+}
+
+.contenedor-planeta {
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    position: relative;
+}
+
+.info-izquierda, .info-derecha {
+    width: 35%;
+    opacity: 0;
+    transform: translateY(50px);
+    z-index: 1;
+}
+
+.info-izquierda {
+    text-align: right;
+    padding-right: 40px;
+}
+
+.info-derecha {
+    padding-left: 40px;
+}
+
+.planeta-centro {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* SOL HIPERREALISTA */
+.sol {
+    width: 500px;
+    height: 500px;
+    aspect-ratio: 1/1;
+    background: radial-gradient(
+        circle at 35% 35%, 
+        #FFFFFF 0%, 
+        #FFFB73 10%,
+        #FFD700 25%,
+        #FFA500 45%,
+        #FF8C00 65%,
+        #FF4500 85%
+    );
+    box-shadow: 
+        0 0 200px rgba(255, 215, 0, 0.8),
+        0 0 300px rgba(255, 165, 0, 0.6),
+        0 0 400px rgba(255, 140, 0, 0.4),
+        0 0 500px rgba(255, 69, 0, 0.2);
+    animation: pulsarSol 8s infinite alternate;
+    position: relative;
+    overflow: visible;
+    border-radius: 50%;
+}
+
+.sol::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    right: -50px;
+    bottom: -50px;
+    background: radial-gradient(
+        circle, 
+        transparent 40%, 
+        rgba(255, 165, 0, 0.2) 60%,
+        rgba(255, 69, 0, 0.1) 80%,
+        transparent 100%
+    );
+    border-radius: 50%;
+    z-index: -1;
+    animation: resplandorSolar 12s infinite alternate;
+}
+
+.sol::after {
+    content: '';
+    position: absolute;
+        z-index: 2;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        radial-gradient(
+            circle at 30% 30%,
+            rgba(255, 255, 255, 0.9) 0%,
+            rgba(255, 255, 255, 0.6) 5%,
+            rgba(255, 255, 255, 0.3) 10%,
+            transparent 20%
+        ),
+        radial-gradient(
+            circle at 70% 60%,
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(255, 255, 255, 0.4) 5%,
+            transparent 15%
+        );
+    animation: rotarSuperficie 30s infinite linear;
+    filter: blur(1px);
+}
+
+@keyframes pulsarSol {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 
+            0 0 150px rgba(255, 215, 0, 0.7),
+            0 0 250px rgba(255, 165, 0, 0.5),
+            0 0 350px rgba(255, 140, 0, 0.3),
+            0 0 450px rgba(255, 69, 0, 0.1);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 
+            0 0 200px rgba(255, 215, 0, 0.9),
+            0 0 300px rgba(255, 165, 0, 0.7),
+            0 0 400px rgba(255, 140, 0, 0.5),
+            0 0 500px rgba(255, 69, 0, 0.3);
+    }
+}
+
+@keyframes resplandorSolar {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+@keyframes rotarSuperficie {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* MERCURIO - SIMPLE Y ELEGANTE */
+.mercurio {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #E8E8E8 0%, 
+        #C0C0C0 20%,
+        #A9A9A9 50%,
+        #808080 80%
+    );
+    box-shadow: 
+        0 0 30px rgba(169, 169, 169, 0.6),
+        inset 0 0 40px rgba(0, 0, 0, 0.4);
+    animation: rotarPlaneta 40s linear infinite;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.mercurio::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(128, 128, 128, 0.9) 5%, transparent 15%),
+        radial-gradient(circle at 60% 70%, rgba(128, 128, 128, 0.8) 8%, transparent 18%),
+        radial-gradient(circle at 40% 40%, rgba(128, 128, 128, 0.7) 6%, transparent 16%);
+    animation: rotarSuperficie 50s infinite linear reverse;
+}
+
+/* VENUS - SUAVE Y ATMOSFÉRICO */
+.venus {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #FFF8DC 0%, 
+        #FAEBD7 20%,
+        #E6E6FA 40%,
+        #D8BFD8 60%,
+        #DDA0DD 80%
+    );
+    box-shadow: 
+        0 0 35px rgba(230, 230, 250, 0.7),
+        inset 0 0 30px rgba(221, 160, 221, 0.3);
+    animation: rotarPlaneta 35s linear infinite reverse;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.venus::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 20%),
+        radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.3) 0%, transparent 15%);
+    animation: rotarNubes 25s infinite linear;
+    filter: blur(1.5px);
+}
+
+/* TIERRA - REALISMO EXTREMO */
+.tierra {
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #87CEEB 0%, 
+        #6495ED 20%,
+        #1E90FF 40%,
+        #1C86EE 60%,
+        #104E8B 80%
+    );
+    box-shadow: 
+        0 0 40px rgba(30, 144, 255, 0.7),
+        inset 0 0 35px rgba(16, 78, 139, 0.4);
+    animation: rotarPlaneta 24s linear infinite;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.tierra::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        /* Continentes suaves */
+        radial-gradient(circle at 25% 40%, rgba(34, 139, 34, 0.7) 8%, transparent 18%),
+        radial-gradient(circle at 65% 25%, rgba(46, 139, 87, 0.6) 6%, transparent 16%),
+        radial-gradient(circle at 40% 70%, rgba(60, 179, 113, 0.5) 10%, transparent 20%),
+        radial-gradient(circle at 75% 60%, rgba(32, 178, 170, 0.4) 7%, transparent 17%),
+        /* Nubes sutiles */
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 3%, transparent 13%),
+        radial-gradient(circle at 60% 50%, rgba(255, 255, 255, 0.5) 5%, transparent 15%),
+        radial-gradient(circle at 45% 80%, rgba(255, 255, 255, 0.4) 4%, transparent 14%);
+    animation: rotarSuperficie 30s infinite linear;
+    filter: blur(0.8px);
+}
+
+/* LUNA - SOBRE TODOS LOS ELEMENTOS */
+.luna {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #F8F8FF 0%, 
+        #D3D3D3 25%, 
+        #A9A9A9 50%,
+        #696969 75%
+    );
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 
+        0 0 25px rgba(255, 255, 255, 0.3),
+        inset 0 0 20px rgba(105, 105, 105, 0.4);
+    overflow: hidden;
+    z-index: 10;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(0deg) translateX(120px) rotate(0deg);
+    animation: orbitarLuna 6s linear infinite;
+}
+@keyframes orbitarLuna {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) translateX(120px) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg) translateX(120px) rotate(-360deg);
+    }
+}
+
+.luna::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(105, 105, 105, 0.9) 8%, transparent 18%),
+        radial-gradient(circle at 60% 50%, rgba(169, 169, 169, 0.8) 12%, transparent 22%),
+        radial-gradient(circle at 40% 70%, rgba(105, 105, 105, 0.7) 10%, transparent 20%);
+    animation: rotarSuperficie 40s infinite linear;
+}
+
+.orbita-lunar {
+    width: 300px;
+    height: 300px;
+    border: none; /* Oculta la órbita visualmente */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    background: none;
+}
+
+/* MARTE - ELEGANTE Y MINIMALISTA */
+.marte {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #FFA07A 0%, 
+        #FF7F50 20%,
+        #FF6347 40%,
+        #FF4500 60%,
+        #B22222 80%
+    );
+    box-shadow: 
+        0 0 35px rgba(255, 69, 0, 0.6),
+        inset 0 0 30px rgba(178, 34, 34, 0.3);
+    animation: rotarPlaneta 25s linear infinite;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.marte::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(178, 34, 34, 0.8) 10%, transparent 20%),
+        radial-gradient(circle at 60% 50%, rgba(178, 34, 34, 0.7) 15%, transparent 25%),
+        radial-gradient(circle at 40% 70%, rgba(178, 34, 34, 0.6) 12%, transparent 22%);
+    animation: rotarSuperficie 35s infinite linear;
+}
+
+/* JÚPITER - SUAVE Y ELEGANTE */
+.jupiter {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #FFF8DC 0%, 
+        #FFEBCD 15%,
+        #F5DEB3 35%,
+        #DEB887 60%,
+        #BC8F8F 85%
+    );
+    box-shadow: 
+        0 0 45px rgba(245, 222, 179, 0.7),
+        inset 0 0 35px rgba(188, 143, 143, 0.3);
+    animation: rotarPlaneta 15s linear infinite;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.jupiter::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        linear-gradient(
+            74deg, 
+            transparent 0%, 
+            rgba(188, 143, 143, 0.2) 8%,
+            transparent 16%,
+            rgba(222, 184, 135, 0.3) 24%,
+            transparent 32%,
+            rgba(245, 222, 179, 0.4) 40%,
+            transparent 48%,
+            rgba(222, 184, 135, 0.3) 56%,
+            transparent 64%,
+            rgba(188, 143, 143, 0.2) 72%,
+            transparent 80%,
+            rgba(245, 222, 179, 0.1) 88%,
+            transparent 96%
+        );
+    animation: rotarBandas 30s infinite linear;
+    filter: blur(0.5px);
+}
+
+/* SATURNO - PREMIUM Y REALISTA */
+.saturno {
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #F5F5DC 0%, 
+        #F0E68C 15%,
+        #D2B48C 35%,
+        #BC8F8F 60%,
+        #A0522D 85%
+    );
+    box-shadow: 
+        0 0 40px rgba(210, 180, 140, 0.6),
+        inset 0 0 30px rgba(160, 82, 45, 0.3);
+    animation: rotarPlaneta 18s linear infinite;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    z-index: 3;
+}
+
+.saturno::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        linear-gradient(
+            83deg, 
+            transparent 0%, 
+            rgba(160, 82, 45, 0.2) 8%,
+            transparent 16%,
+            rgba(188, 143, 143, 0.3) 24%,
+            transparent 32%,
+            rgba(210, 180, 140, 0.4) 40%,
+            transparent 48%,
+            rgba(188, 143, 143, 0.3) 56%,
+            transparent 64%,
+            rgba(160, 82, 45, 0.2) 72%,
+            transparent 80%
+        );
+    animation: rotarSuperficie 25s infinite linear;
+    filter: blur(0.6px);
+}
+
+/* ANILLOS DE SATURNO - ULTRA REALISTAS */
+.anillos-saturno {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 90px;
+    transform: translate(-50%, -50%) rotateX(75deg) rotateZ(20deg);
+    border-radius: 50%;
+    z-index: 2;
+    perspective: 1000px;
+}
+
+.anillos-saturno::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        radial-gradient(
+            circle,
+            transparent 30%,
+            rgba(245, 245, 220, 0.1) 35%,
+            rgba(240, 230, 140, 0.2) 40%,
+            rgba(210, 180, 140, 0.4) 45%,
+            rgba(188, 143, 143, 0.6) 50%,
+            rgba(210, 180, 140, 0.4) 55%,
+            rgba(240, 230, 140, 0.2) 60%,
+            rgba(245, 245, 220, 0.1) 65%,
+            transparent 70%
+        );
+    box-shadow: 0 0 20px rgba(210, 180, 140, 0.3);
+    animation: rotarAnillos 20s infinite linear;
+    filter: blur(0.3px);
+}
+
+/* Resto de planetas con el mismo estilo premium */
+.urano {
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #E0FFFF 0%, 
+        #AFEEEE 20%,
+        #87CEEB 40%,
+        #4682B4 60%,
+        #4169E1 80%
+    );
+    box-shadow: 
+        0 0 35px rgba(135, 206, 235, 0.6),
+        inset 0 0 30px rgba(65, 105, 225, 0.3);
+    animation: rotarPlaneta 20s linear infinite;
+    border-radius: 50%;
+}
+
+.neptuno {
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #4169E1 0%, 
+        #0000CD 20%,
+        #191970 40%,
+        #000080 60%,
+        #00008B 80%
+    );
+    box-shadow: 
+        0 0 35px rgba(0, 0, 128, 0.6),
+        inset 0 0 30px rgba(0, 0, 139, 0.3);
+    animation: rotarPlaneta 22s linear infinite;
+    border-radius: 50%;
+}
+
+.pluton {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        #D2B48C 0%, 
+        #BC8F8F 20%,
+        #A0522D 40%,
+        #8B4513 60%,
+        #654321 80%
+    );
+    box-shadow: 
+        0 0 25px rgba(188, 143, 143, 0.6),
+        inset 0 0 20px rgba(101, 67, 33, 0.3);
+    animation: rotarPlaneta 25s linear infinite;
+    border-radius: 50%;
+}
+
+.luna-pluton {
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(
+        circle, 
+        #D2B48C 0%, 
+        #BC8F8F 30%,
+        #A0522D 60%,
+        #8B4513 90%
+    );
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(188, 143, 143, 0.5);
+    animation: orbitarPluton 10s linear infinite;
+}
+
+/* ANIMACIONES COMPARTIDAS */
+@keyframes rotarPlaneta {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotarSuperficie {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotarNubes {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotarBandas {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotarAnillos {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes orbitarPluton {
+    0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+}
+
+/* Resto del CSS (se mantiene igual) */
+h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: transparent;
+    background: linear-gradient(45deg, #ffffff, #aaaaaa);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.datos-destacados {
+    margin-top: 20px;
+    padding: 15px;
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+}
+
+.fondo-estrellas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.estrella {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 5s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+.indicador-scroll {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+}
+
+.punto-indicador {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(138, 43, 226, 0.4);
+    margin: 15px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.3);
+}
+
+.punto-indicador::after {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #E6E6FA;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+}
+
+.punto-indicador:nth-child(1)::after { content: 'Inicio'; }
+.punto-indicador:nth-child(2)::after { content: 'Sol'; }
+.punto-indicador:nth-child(3)::after { content: 'Mercurio'; }
+.punto-indicador:nth-child(4)::after { content: 'Venus'; }
+.punto-indicador:nth-child(5)::after { content: 'Tierra'; }
+.punto-indicador:nth-child(6)::after { content: 'Marte'; }
+.punto-indicador:nth-child(7)::after { content: 'Júpiter'; }
+.punto-indicador:nth-child(8)::after { content: 'Saturno'; }
+.punto-indicador:nth-child(9)::after { content: 'Urano'; }
+.punto-indicador:nth-child(10)::after { content: 'Neptuno'; }
+.punto-indicador:nth-child(11)::after { content: 'Plutón'; }
+
+.punto-indicador:hover::after,
+.punto-indicador.activo::after {
+    opacity: 1;
+}
+
+.punto-indicador.activo {
+    background: #8A2BE2;
+    transform: scale(1.3);
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+}
+
+.titulo-seccion {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    opacity: 0.7;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+.controles {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.btn-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.btn-control:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.progreso-scroll {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+}
+
+.barra-progreso {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #8A2BE2, #1E90FF, #00BFFF, #8A2BE2);
+    background-size: 300% 100%;
+    animation: gradientFlow 5s ease infinite;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.7);
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .contenedor-planeta {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .info-izquierda, .info-derecha {
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+    }
+    
+    .planeta-centro {
+        width: 100%;
+        margin: 30px 0;
+    }
+    
+    h2 {
+        font-size: 2.5rem;
+    }
+    
+    .home-title {
+        font-size: 3rem;
+    }
+    
+    /* Ajustar tamaños de planetas para móviles */
+    .sol {
+        width: 300px;
+        height: 300px;
+        aspect-ratio: 1/1;
+    }
+    
+    .mercurio {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .venus {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .tierra {
+        width: 130px;
+        height: 130px;
+    }
+    
+    .luna {
+        width: 35px;
+        height: 35px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(0deg) translateX(85px) rotate(0deg);
+        animation: orbitarLuna 6s linear infinite;
+    }
+    
+    .orbita-lunar {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .marte {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .jupiter {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .saturno {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .anillos-saturno {
+        width: 300px;
+        height: 70px;
+    }
+    
+    .urano, .neptuno {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .pluton {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .luna-pluton {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    h2 {
+        font-size: 2rem;
+    }
+    
+    .home-title {
+        font-size: 2.5rem;
+    }
+    
+    .home-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .indicador-scroll {
+        right: 10px;
+    }
+    
+    .punto-indicador::after {
+        display: none;
+    }
+    
+    /* Ajustar tamaños de planetas para pantallas muy pequeñas */
+    .sol {
+        width: 250px;
+        height: 250px;
+        aspect-ratio: 1/1;
+    }
+    
+    .mercurio {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .venus {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .tierra {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .luna {
+        width: 28px;
+        height: 28px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(0deg) translateX(65px) rotate(0deg);
+        animation: orbitarLuna 6s linear infinite;
+    }
+    
+    .orbita-lunar {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .marte {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .jupiter {
+        width: 170px;
+        height: 170px;
+    }
+    
+    .saturno {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .anillos-saturno {
+        width: 240px;
+        height: 60px;
+    }
+    
+    .urano, .neptuno {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .pluton {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .luna-pluton {
+        width: 16px;
+        height: 16px;
+    }
+}
