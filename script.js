@@ -101,22 +101,25 @@ function cambiarPlaneta(nuevoPlaneta) {
             // Transición de planetas a home
             const planetaElemActual = document.getElementById(`planeta${planetas[planetaActual].charAt(0).toUpperCase() + planetas[planetaActual].slice(1)}`);
             const infoActual = seccionActual.querySelectorAll('.info-izquierda, .info-derecha');
-            
+            // Anillo de Saturno
+            let anilloSaturno = null;
+            if (planetas[planetaActual] === 'saturno') {
+                anilloSaturno = seccionActual.querySelector('.anillos-saturno');
+            }
             // Detener animación de la luna si estamos en la Tierra
             if (planetaActual === 4 && animacionLuna) {
                 animacionLuna.pause();
             }
-            
-            // Animación de salida del planeta actual
+            // Animación de salida del planeta actual y anillo si es Saturno
+            const targetsSalida = anilloSaturno ? [planetaElemActual, anilloSaturno] : planetaElemActual;
             anime({
-                targets: planetaElemActual,
+                targets: targetsSalida,
                 scale: 0.3,
                 opacity: 0,
                 rotate: `${direccion * 90}deg`,
                 duration: 800,
                 easing: 'easeInOutQuad'
             });
-            
             // Animación de salida de la información actual
             anime({
                 targets: infoActual,
@@ -128,7 +131,6 @@ function cambiarPlaneta(nuevoPlaneta) {
                 complete: function() {
                     seccionActual.classList.remove('activa');
                     seccionSiguiente.classList.add('activa');
-                    
                     // Animar contenido de home
                     const homeContent = document.querySelector('.home-content');
                     anime({
@@ -149,22 +151,25 @@ function cambiarPlaneta(nuevoPlaneta) {
         if (planetaActual > 0) { // Solo si estamos en un planeta (no en home)
             const planetaElemActual = document.getElementById(`planeta${planetas[planetaActual].charAt(0).toUpperCase() + planetas[planetaActual].slice(1)}`);
             const infoActual = seccionActual.querySelectorAll('.info-izquierda, .info-derecha');
-            
+            // Anillo de Saturno
+            let anilloSaturno = null;
+            if (planetas[planetaActual] === 'saturno') {
+                anilloSaturno = seccionActual.querySelector('.anillos-saturno');
+            }
             // Detener animación de la luna si estamos en la Tierra
             if (planetaActual === 4 && animacionLuna) {
                 animacionLuna.pause();
             }
-            
-            // Animación de salida del planeta actual
+            // Animación de salida del planeta actual y anillo si es Saturno
+            const targetsSalida = anilloSaturno ? [planetaElemActual, anilloSaturno] : planetaElemActual;
             anime({
-                targets: planetaElemActual,
+                targets: targetsSalida,
                 scale: 0.3,
                 opacity: 0,
                 rotate: `${direccion * 90}deg`,
                 duration: 1000,
                 easing: 'easeInOutQuad'
             });
-            
             // Animación de salida de la información actual
             anime({
                 targets: infoActual,
@@ -226,9 +231,14 @@ function animarPlaneta(indicePlaneta) {
     const planetaElem = document.getElementById(`planeta${nombrePlaneta.charAt(0).toUpperCase() + nombrePlaneta.slice(1)}`);
     const infoSiguiente = document.querySelectorAll(`#${nombrePlaneta} .info-izquierda, #${nombrePlaneta} .info-derecha`);
     
-    // Animación de entrada del siguiente planeta
+    // Animación de entrada del siguiente planeta y anillo si es Saturno
+    let anilloSaturno = null;
+    if (nombrePlaneta === 'saturno') {
+        anilloSaturno = document.querySelector('#saturno .anillos-saturno');
+    }
+    const targetsEntrada = anilloSaturno ? [planetaElem, anilloSaturno] : planetaElem;
     anime({
-        targets: planetaElem,
+        targets: targetsEntrada,
         scale: [0.3, 1],
         opacity: [0, 1],
         rotate: [`${-90}deg`, '0deg'],
